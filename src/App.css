@@ -481,14 +481,6 @@ html {
   min-height: 70vh;
   padding: 3rem 2rem;
   background: #111111;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.about-section.animate {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .about-container {
@@ -509,14 +501,6 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s;
-}
-
-.about-section.animate .about-text h2 {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .about-text p {
@@ -571,14 +555,6 @@ html {
   min-height: 70vh;
   padding: 3rem 2rem;
   background: #0a0a0a;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.portfolio-section.animate {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .portfolio-section h2 {
@@ -590,14 +566,6 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s;
-}
-
-.portfolio-section.animate h2 {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .portfolio-grid {
@@ -612,36 +580,13 @@ html {
   background: #111111;
   border-radius: 15px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.portfolio-section.animate .portfolio-item:nth-child(1) { 
-  transition-delay: 0.4s; 
-  opacity: 1;
-  transform: translateY(0);
-}
-.portfolio-section.animate .portfolio-item:nth-child(2) { 
-  transition-delay: 0.6s; 
-  opacity: 1;
-  transform: translateY(0);
-}
-.portfolio-section.animate .portfolio-item:nth-child(3) { 
-  transition-delay: 0.8s; 
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.portfolio-section.animate .portfolio-item {
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.portfolio-section.animate .portfolio-item:hover {
-  transform: translateY(-10px) !important;
-  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.portfolio-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
 }
 
 .portfolio-image {
@@ -671,14 +616,6 @@ html {
   min-height: 100vh;
   padding: 5rem 2rem;
   background: #111111;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.contact-section.animate {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .contact-container {
@@ -698,14 +635,6 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s;
-}
-
-.contact-section.animate .contact-info h2 {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .contact-info p {

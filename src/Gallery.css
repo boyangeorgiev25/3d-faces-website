@@ -15,6 +15,7 @@
   );
   text-align: center;
   padding: 1.5rem;
+  padding-top: 8rem;
   position: relative;
   opacity: 0;
   animation: galleryHeroFadeIn 1s ease-out forwards;

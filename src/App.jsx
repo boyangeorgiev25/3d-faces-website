@@ -12,34 +12,6 @@ function App() {
     localStorage.setItem('language', newLanguage);
   };
 
-  useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate');
-        }
-      });
-    }, observerOptions);
-
-    setTimeout(() => {
-      const sections = document.querySelectorAll('.about-section, .portfolio-section, .contact-section');
-      sections.forEach((section) => {
-        observer.observe(section);
-      });
-    }, 100);
-
-    return () => {
-      const sections = document.querySelectorAll('.about-section, .portfolio-section, .contact-section');
-      sections.forEach((section) => {
-        observer.unobserve(section);
-      });
-    };
-  }, []);
 
   const translations = {
     en: {
