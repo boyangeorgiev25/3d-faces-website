@@ -1,12 +1,15 @@
 import "./Gallery.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "./contexts/AuthContext";
 
 function Gallery() {
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem('language') || 'bg';
   });
   const [activeFilter, setActiveFilter] = useState('all');
+  const [showUserPopup, setShowUserPopup] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
 
   const handleLanguageChange = (newLanguage) => {
     setLanguage(newLanguage);
@@ -26,7 +29,10 @@ function Gallery() {
       all: "All",
       portraits: "Portraits",
       characters: "Characters",
-      realistic: "Realistic"
+      realistic: "Realistic",
+      login: "Login",
+      logout: "Logout",
+      welcome: "Welcome"
     },
     bg: {
       brand: "3D Лица",
@@ -40,7 +46,10 @@ function Gallery() {
       all: "Всички",
       portraits: "Портрети",
       characters: "Персонажи",
-      realistic: "Реалистични"
+      realistic: "Реалистични",
+      login: "Вход",
+      logout: "Изход",
+      welcome: "Добре дошли"
     }
   };
 
@@ -104,18 +113,69 @@ function Gallery() {
   return (
     <div className="Gallery">
       <nav className="navbar">
-        <div className="nav-brand">{t.brand}</div>
-        <div className="nav-links">
-          <Link to="/">{t.home}</Link>
-          <Link to="/#about">{t.about}</Link>
-          <Link to="/#portfolio">{t.portfolio}</Link>
-          <Link to="/#contact">{t.contact}</Link>
-          <button 
-            className="lang-button" 
-            onClick={() => handleLanguageChange(language === 'en' ? 'bg' : 'en')}
-          >
-            {language === 'en' ? 'BG' : 'EN'}
-          </button>
+        <div className="nav-container">
+          <div className="nav-brand">
+            <span className="brand-icon">⚡</span>
+            <span className="brand-text">{t.brand}</span>
+          </div>
+          
+          <div className="nav-center">
+            <div className="nav-links">
+              <Link to="/" className="nav-link">{t.home}</Link>
+              <Link to="/#about" className="nav-link">{t.about}</Link>
+              <Link to="/#portfolio" className="nav-link">{t.portfolio}</Link>
+              <Link to="/#contact" className="nav-link">{t.contact}</Link>
+            </div>
+          </div>
+
+          <div className="nav-right">
+            <button 
+              className="lang-toggle" 
+              onClick={() => handleLanguageChange(language === 'en' ? 'bg' : 'en')}
+            >
+              {language === 'en' ? 'BG' : 'EN'}
+            </button>
+            
+            {isAuthenticated ? (
+              <div className="user-profile">
+                <div className="user-display" onClick={() => setShowUserPopup(!showUserPopup)}>
+                  <div className="user-avatar">
+                    <span>{user?.username?.[0]?.toUpperCase() || 'U'}</span>
+                  </div>
+                  <span className="user-name">{user?.username || 'User'}</span>
+                </div>
+                
+                {showUserPopup && (
+                  <div className="user-popup">
+                    <div className="user-popup-content">
+                      <div className="user-info-section">
+                        <div className="user-avatar-large">
+                          <span>{user?.username?.[0]?.toUpperCase() || 'U'}</span>
+                        </div>
+                        <div className="user-details">
+                          <h3>{user?.username || 'User'}</h3>
+                          <p>{user?.email || 'user@example.com'}</p>
+                          <span className="user-status">Online</span>
+                        </div>
+                      </div>
+                      <button className="logout-button-popup" onClick={() => {
+                        logout();
+                        setShowUserPopup(false);
+                      }}>
+                        <span className="logout-icon">🚪</span>
+                        {t.logout}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/" className="login-btn">
+                <span className="login-icon">👤</span>
+                {t.login}
+              </Link>
+            )}
+          </div>
         </div>
       </nav>
 

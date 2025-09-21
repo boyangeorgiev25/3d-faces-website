@@ -1,11 +1,16 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "./contexts/AuthContext";
+import AuthForm from "./components/LoginForm";
 
 function App() {
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem('language') || 'bg';
   });
+  const [showAuthForm, setShowAuthForm] = useState(false);
+  const [showUserPopup, setShowUserPopup] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
 
   const handleLanguageChange = (newLanguage) => {
     setLanguage(newLanguage);
@@ -36,7 +41,23 @@ function App() {
       yourName: "Your Name",
       yourEmail: "Your Email",
       tellProject: "Tell me about your project",
-      sendMessage: "Send Message"
+      sendMessage: "Send Message",
+      login: "Login",
+      logout: "Logout",
+      welcome: "Welcome",
+      signup: "Sign Up",
+      username: "Username",
+      email: "Email",
+      password: "Password",
+      confirmPassword: "Confirm Password",
+      cancel: "Cancel",
+      loginFailed: "Login failed. Please check your credentials.",
+      signupFailed: "Signup failed. Please try again.",
+      passwordsDontMatch: "Passwords don't match.",
+      loggingIn: "Logging in...",
+      signingUp: "Signing up...",
+      noAccount: "Don't have an account?",
+      haveAccount: "Already have an account?"
     },
     bg: {
       brand: "3D Лица",
@@ -60,7 +81,23 @@ function App() {
       yourName: "Вашето име",
       yourEmail: "Вашия имейл",
       tellProject: "Разкажете ми за вашия проект",
-      sendMessage: "Изпрати съобщение"
+      sendMessage: "Изпрати съобщение",
+      login: "Вход",
+      logout: "Изход",
+      welcome: "Добре дошли",
+      signup: "Регистрация",
+      username: "Потребителско име",
+      email: "Имейл",
+      password: "Парола",
+      confirmPassword: "Потвърди парола",
+      cancel: "Отказ",
+      loginFailed: "Неуспешен вход. Моля, проверете данните си.",
+      signupFailed: "Неуспешна регистрация. Моля, опитайте отново.",
+      passwordsDontMatch: "Паролите не съвпадат.",
+      loggingIn: "Влизане...",
+      signingUp: "Регистриране...",
+      noAccount: "Нямате акаунт?",
+      haveAccount: "Вече имате акаунт?"
     }
   };
 
@@ -68,54 +105,153 @@ function App() {
   return (
     <div className="App">
       <nav className="navbar">
-        <div className="nav-brand">{t.brand}</div>
-        <div className="nav-links">
-          <a href="#hero">{t.home}</a>
-          <a href="#about">{t.about}</a>
-          <a href="#portfolio">{t.portfolio}</a>
-          <a href="#contact">{t.contact}</a>
-          <button 
-            className="lang-button" 
-            onClick={() => handleLanguageChange(language === 'en' ? 'bg' : 'en')}
-          >
-            {language === 'en' ? 'BG' : 'EN'}
-          </button>
+        <div className="nav-container">
+          <div className="nav-brand">
+            <span className="brand-icon">⚡</span>
+            <span className="brand-text">{t.brand}</span>
+          </div>
+          
+          <div className="nav-center">
+            <div className="nav-links">
+              <a href="#hero" className="nav-link">{t.home}</a>
+              <a href="#about" className="nav-link">{t.about}</a>
+              <a href="#portfolio" className="nav-link">{t.portfolio}</a>
+              <a href="#contact" className="nav-link">{t.contact}</a>
+            </div>
+          </div>
+
+          <div className="nav-right">
+            <button 
+              className="lang-toggle" 
+              onClick={() => handleLanguageChange(language === 'en' ? 'bg' : 'en')}
+            >
+              {language === 'en' ? 'BG' : 'EN'}
+            </button>
+            
+            {isAuthenticated ? (
+              <div className="user-profile">
+                <div className="user-display" onClick={() => setShowUserPopup(!showUserPopup)}>
+                  <div className="user-avatar">
+                    <span>{user?.username?.[0]?.toUpperCase() || 'U'}</span>
+                  </div>
+                  <span className="user-name">{user?.username || 'User'}</span>
+                </div>
+                
+                {showUserPopup && (
+                  <div className="user-popup">
+                    <div className="user-popup-content">
+                      <div className="user-info-section">
+                        <div className="user-avatar-large">
+                          <span>{user?.username?.[0]?.toUpperCase() || 'U'}</span>
+                        </div>
+                        <div className="user-details">
+                          <h3>{user?.username || 'User'}</h3>
+                          <p>{user?.email || 'user@example.com'}</p>
+                          <span className="user-status">Online</span>
+                        </div>
+                      </div>
+                      <button className="logout-button-popup" onClick={() => {
+                        logout();
+                        setShowUserPopup(false);
+                      }}>
+                        <span className="logout-icon">🚪</span>
+                        {t.logout}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button className="login-btn" onClick={() => setShowAuthForm(true)}>
+                <span className="login-icon">👤</span>
+                {t.login}
+              </button>
+            )}
+          </div>
         </div>
       </nav>
 
       <section id="hero" className="hero-section">
-        <div className="hero-content">
-          <h1>{t.heroTitle}</h1>
-          <p>
-            {t.heroDesc}
-          </p>
-          <div className="hero-benefits">
-            <div className="benefit">
-              <span>⚡</span>
-              <span>{language === 'bg' ? 'Бърза доставка' : 'Fast Delivery'}</span>
+        <div className="hero-container">
+          <div className="hero-content">
+            <h1 className="hero-title">{t.heroTitle}</h1>
+            <p className="hero-description">
+              {t.heroDesc}
+            </p>
+            
+            <div className="hero-stats">
+              <div className="stat-item">
+                <span className="stat-number">50+</span>
+                <span className="stat-label">{language === 'bg' ? 'Проекта' : 'Projects'}</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">100%</span>
+                <span className="stat-label">{language === 'bg' ? 'Качество' : 'Quality'}</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">24/7</span>
+                <span className="stat-label">{language === 'bg' ? 'Поддръжка' : 'Support'}</span>
+              </div>
             </div>
-            <div className="benefit">
-              <span>💎</span>
-              <span>{language === 'bg' ? 'Премиум качество' : 'Premium Quality'}</span>
+
+            <div className="hero-actions">
+              <Link to="/gallery" className="primary-btn">
+                <span>{t.viewPortfolio}</span>
+                <span className="btn-arrow">→</span>
+              </Link>
+              <button className="secondary-btn" onClick={() => setShowAuthForm(true)}>
+                <span className="btn-icon">💬</span>
+                {language === 'bg' ? 'Започни проект' : 'Start Project'}
+              </button>
             </div>
-            <div className="benefit">
-              <span>🎯</span>
-              <span>{language === 'bg' ? 'Индивидуален подход' : 'Custom Approach'}</span>
+
+            <div className="hero-features">
+              <div className="feature-item">
+                <div className="feature-icon">⚡</div>
+                <div className="feature-text">
+                  <h4>{language === 'bg' ? 'Бърза доставка' : 'Fast Delivery'}</h4>
+                  <p>{language === 'bg' ? 'До 7 дни' : 'Within 7 days'}</p>
+                </div>
+              </div>
+              <div className="feature-item">
+                <div className="feature-icon">🎯</div>
+                <div className="feature-text">
+                  <h4>{language === 'bg' ? 'Индивидуален подход' : 'Custom Approach'}</h4>
+                  <p>{language === 'bg' ? 'Според нуждите ви' : 'Tailored to you'}</p>
+                </div>
+              </div>
             </div>
           </div>
-          <Link to="/gallery" className="cta-button">{t.viewPortfolio}</Link>
-        </div>
-        <div className="hero-visual">
-          <div className="geometric-shapes">
-            <div className="shape triangle"></div>
-            <div className="shape rectangle"></div>
-            <div className="shape hexagon"></div>
-            <div className="shape parallelogram"></div>
-            <div className="shape diamond"></div>
-            <div className="shape pentagon"></div>
-          </div>
-          <div className="face-showcase">
-            <img src="/homeIng1.png" alt="3D Face" className="face-image" />
+
+          <div className="hero-visual">
+            <div className="visual-container">
+              <div className="main-showcase">
+                <img src="/homeIng1.png" alt="3D Face" className="showcase-image" />
+                <div className="showcase-glow"></div>
+              </div>
+              
+              <div className="floating-cards">
+                <div className="floating-card card-1">
+                  <div className="card-icon">🎨</div>
+                  <div className="card-text">3D Modeling</div>
+                </div>
+                <div className="floating-card card-2">
+                  <div className="card-icon">✨</div>
+                  <div className="card-text">Rendering</div>
+                </div>
+                <div className="floating-card card-3">
+                  <div className="card-icon">🎬</div>
+                  <div className="card-text">Animation</div>
+                </div>
+              </div>
+
+              <div className="geometric-elements">
+                <div className="geo-element geo-1"></div>
+                <div className="geo-element geo-2"></div>
+                <div className="geo-element geo-3"></div>
+                <div className="geo-element geo-4"></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -189,6 +325,10 @@ function App() {
           </div>
         </div>
       </section>
+      
+      {showAuthForm && (
+        <AuthForm onClose={() => setShowAuthForm(false)} translations={t} />
+      )}
     </div>
   );
 }
