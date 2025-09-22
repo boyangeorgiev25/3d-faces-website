@@ -43,9 +43,10 @@ html {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
+  gap: 2rem;
 }
 
 .nav-brand {
@@ -69,14 +70,13 @@ html {
 }
 
 .nav-center {
-  flex: 1;
   display: flex;
   justify-content: center;
 }
 
 .nav-links {
   display: flex;
-  gap: 2.5rem;
+  gap: 1.8rem;
 }
 
 .nav-link {
@@ -132,18 +132,20 @@ html {
 }
 
 .login-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   border-radius: 25px;
   color: white;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .login-btn:hover {
@@ -1406,4 +1408,44 @@ html {
   border-radius: 8px;
   margin-bottom: 1rem;
   font-size: 0.9rem;
+}
+
+/* Chat Floating Action Button */
+.chat-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+}
+
+.chat-fab:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  .chat-fab {
+    bottom: 1rem;
+    right: 1rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
 }
